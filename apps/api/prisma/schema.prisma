@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RuleType {
+  BLOCK
+  ALLOW
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  passwordHash  String
+  timezone      String         @default("UTC")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  rules         DomainRule[]
+  schedules     Schedule[]
+  usageEntries  UsageEntry[]
+  focusSessions FocusSession[]
+}
+
+model DomainRule {
+  id         String    @id @default(cuid())
+  userId     String
+  domain     String
+  type       RuleType  @default(BLOCK)
+  enabled    Boolean   @default(true)
+  dailyLimitMinutes Int?
+  scheduleId String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schedule   Schedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, domain])
+  @@index([userId, type, enabled])
+  @@index([scheduleId])
+}
+
+model Schedule {
+  id         String       @id @default(cuid())
+  userId     String
+  name       String
+  startTime  String
+  endTime    String
+  daysOfWeek Int[]
+  enabled    Boolean      @default(true)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rules      DomainRule[]
+
+  @@index([userId, enabled])
+}
+
+model UsageEntry {
+  id              String   @id @default(cuid())
+  userId          String
+  domain          String
+  startedAt       DateTime
+  durationSeconds Int
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+  @@index([userId, domain, startedAt])
+}
+
+model FocusSession {
+  id           String    @id @default(cuid())
+  userId       String
+  title        String    @default("Focus session")
+  plannedMins  Int       @default(25)
+  startedAt    DateTime  @default(now())
+  endedAt      DateTime?
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt])
+}

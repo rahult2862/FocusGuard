@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FocusGuard</title><link rel="stylesheet" href="popup.css"></head>
+  <body>
+    <main class="popup">
+      <header><div class="mark">✳</div><div><strong>focus<span>guard</span></strong><small>YOUR FOCUS COMPANION</small></div><span class="status-dot" id="status-dot"></span></header>
+      <section id="signed-out" class="hidden">
+        <div class="intro"><div class="eyebrow">A LITTLE MORE INTENTION</div><h1>Connect your<br>focus space.</h1><p>Sign in to sync your rules and track the time you spend on websites.</p></div>
+        <form id="login-form"><label>Email<input id="email" type="email" placeholder="you@example.com" autocomplete="email" required></label><label>Password<input id="password" type="password" placeholder="Your password" autocomplete="current-password" required></label><div id="error" role="alert"></div><button type="submit" id="submit">Sign in to FocusGuard <span>↗</span></button></form>
+        <p class="signup-note">New here? <a href="http://localhost:5173" target="_blank">Create an account in the dashboard</a></p>
+      </section>
+      <section id="signed-in" class="hidden">
+        <div class="connected"><div class="connected-icon">✓</div><div><div class="eyebrow">YOU'RE ALL SET</div><h1>FocusGuard is<br>looking out for you.</h1></div></div>
+        <div class="summary"><div><strong id="blocked-count">0</strong><span>sites protected</span></div><div><strong id="last-sync">Just now</strong><span>last synced</span></div></div>
+        <p class="sync-note"><i></i> Your rules sync automatically while Chrome is open.</p>
+        <div class="popup-actions"><a href="http://localhost:5173" target="_blank">Open dashboard <span>↗</span></a><button id="sign-out">Sign out</button></div>
+      </section>
+      <footer>YOUR TIME IS YOURS <span>✦</span></footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

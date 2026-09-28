@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "FocusGuard — Focus with intention",
+  "version": "1.0.0",
+  "description": "Apply your FocusGuard website rules and understand your browsing time.",
+  "permissions": ["storage", "tabs", "alarms", "declarativeNetRequest"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "service-worker.js" },
+  "action": {
+    "default_title": "FocusGuard",
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [{ "resources": ["blocked.html", "blocked.css", "blocked.js"], "matches": ["<all_urls>"] }]
+}
